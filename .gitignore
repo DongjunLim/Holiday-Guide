@@ -37,6 +37,8 @@ bower_components
 # Compiled binary addons (https://nodejs.org/api/addons.html)
 build/Release
 
+config/
+
 # Dependency directories
 node_modules/
 jspm_packages/
@@ -67,7 +69,6 @@ typings/
 
 # Yarn Integrity file
 .yarn-integrity
-.yarn.lock
 
 # dotenv environment variables file
 .env
@@ -106,6 +107,3 @@ dist
 
 # Stores VSCode versions used for testing VSCode extensions
 .vscode-test
-
-package-lock.json
-package.json

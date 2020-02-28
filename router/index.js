@@ -1,7 +1,7 @@
 const express = require('express');
 const app = express();
 const router = express.Router();
-const nugu = requuire('nugu-kit');
+const nugu = require('nugu-kit');
 
 router.post('/holiday-count', async (req, res) => {
     nugu.app(req,res);
