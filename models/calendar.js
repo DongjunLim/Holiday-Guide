@@ -6,8 +6,8 @@ module.exports = function (sequelize, DataTypes) {
         yun: { field: 'yun', type: DataTypes.TINYINT(1), allowNull: false, defaultValue: 0 },
         memo: { field: 'memo', type: DataTypes.STRING(50), allowNull: false, defaultValue: '' },
         ganji: { field: 'ganji', type: DataTypes.STRING(5), defaultValue:''},
-        is_weekend: { field: 'is_weekend', type: DataTypes.BOOLEAN, allowNull : false, defaultValue:false}
-
+        is_weekend: { field: 'is_weekend', type: DataTypes.BOOLEAN, allowNull : false, defaultValue:false},
+        day_of_the_week: { field: 'day_of_the_week', type:DataTypes.STRING, allowNull:false, defaultValue:''}
     },{
         charset: 'utf8',
         collate:'utf8_unicode_ci',
