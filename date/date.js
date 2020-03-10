@@ -10,5 +10,5 @@ module.exports = convertKorFormat = (solar_date) => {
     var day_of_the_week = weekKorName[solar_date.getDay()];
 
     return month + '월 ' + day + '일 ' + day_of_the_week;
-    
+   
 }

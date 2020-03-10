@@ -1,5 +1,5 @@
 const nugu = require('nugu-kit');
-const nuguService = require('../nugu_service/nuguService');
+const nuguService = require('../nugu/nuguService');
 
 const response = (nugu, output) => {
     if(!output){
@@ -24,19 +24,18 @@ exports.countHoliday = async (req,res) => {
 
 exports.findLongHoliday = async (req,res) => {
 
-    const { Year, Month} = req.parameters;
+    const { Year } = req.parameters;
 
-    const output = Year? nuguService.findLongHolidayInYear(year=Year) : nuguService.findLongHolidayInMonth(month=Month);
+    const output = nuguService.findLongHolidayInYear(Year);
 
     return response(req.nugu, output);
-
 }
 
 exports.findHolidayDate = async (req,res) => {
+    
     const { holidayName} = req.parameters;
 
     const output = nuguService.findholidayDate(holidayName);
 
     return response(req.nugu, output);
-
 }

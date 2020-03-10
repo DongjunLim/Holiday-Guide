@@ -1,7 +1,5 @@
 'use strict'
-
-
-
+const {PORT} = require('./config');
 const express = require('express')
 const bodyParser = require('body-parser')
 const nuguParser = require('./middlewares/nugu');

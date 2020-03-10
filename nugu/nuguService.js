@@ -1,12 +1,15 @@
 'use strict'
 const query = require('../db/query');
-const LongHoliday = require('../LongHoliday');
+const convertKorFormat = require('../date/date');
+const Year = require('./Year');
 
-const nuguService = {
+
+module.exports = nuguService = {
     countHoliday: async (year = null, month = null) => {
         const today = new Date();
         const thisYear = today.getFullYear();
         const thisMonth = today.getMonth() + 1;
+        const output = {};
         let num;
 
         switch (year) {
@@ -48,8 +51,8 @@ const nuguService = {
                 break;
 
         }
+        output['slotFilling_numHoliday'] = num;
 
-        return num;
     },
 
     findLongHolidayInYear: async (year) => {
@@ -57,65 +60,57 @@ const nuguService = {
         const thisYear = today.getFullYear();
         const output = {};
         let longHolidays = [];
-        let dayList;
-        let candidates = [];
-        let isAlternativeHoliday = false;
+        let days;
         let responseSentence = '';
+
         switch (year) {
             case 'BID_DT_YEAR':
-                dayList = await query.findHolidayInYear(thisYear);
+                days = await query.findEverydayInYear(thisYear);
                 break;
             case 'BID_DT_YEAR.-1':
-                dayList = await query.findHolidayInYear(thisYear - 1);
+                days = await query.findEverydayInYear(thisYear - 1);
                 break;
             case 'BID_DT_YEAR.-2':
-                dayList = await query.findHolidayInYear(thisYear - 2);
+                days = await query.findEverydayInYear(thisYear - 2);
                 break;
             case 'BID_DT_YEAR.-3':
-                dayList = await query.findHolidayInYear(thisYear - 3);
+                days = await query.findEverydayInYear(thisYear - 3);
                 break;
             case 'BID_DT_YEAR.1':
-                dayList = await query.findHolidayInYear(thisYear + 1);
+                days = await query.findEverydayInYear(thisYear + 1);
                 break;
             case 'BID_DT_YEAR.2':
-                dayList = await query.findHolidayInYear(thisYear + 2);
+                days = await query.findEverydayInYear(thisYear + 2);
                 break;
         }
-        for (var i in dayList) {
-            if (dayList[i].is_weekend) {
-                candidates.push(dayList[i]);
-                if ((dayList[i].day_of_the_week == 'Sat') || (dayList[i].day_of_the_week == 'Sun')) {
-                    if ((dayList[i].memo == '설날연휴') ||
-                        (dayList[i].memo == '추석연휴') ||
-                        (dayList[i].memo == '어린이날')) {
-                        isAlternativeHoliday = true;
-                    }
-                }
-            } else {
-                if (isAlternativeHoliday) {
-                    candidates.push(dayList[i]);
-                    isAlternativeHoliday = false;
-                }
-                if (candidates.length > 2) {
-                    var longHoliday = new LongHoliday(candidates);
-                    longHolidays.push(longHoliday);
-                }
-                candidates = [];
-            }
-        }
+
+        var yr = new Year(days);
+        longHolidays = yr.longHolidays;
+
         await longHolidays.forEach(item => {
             responseSentence = responseSentence + item.getExplanation();
         })
+
         output['Num_HolidayPeriod'] = longHolidays.length;
         output['HolidayPeriod_List'] = responseSentence.slice(0,-2);
+
         return output;
 
     },
 
-    findholidayDate: (holidayName) => {
+    findholidayDate: async (holidayName) => {
+        const output = {};
+        const today = new Date();
+        const thisYear = today.getFullYear();
+        const holiday = await query.findHoliday(thisYear,holidayName); 
 
+        output['holidayName'] = holiday.memo;
+        output['Date_HolidayName'] = convertKorFormat(holiday.solar_date);
+
+        return output;
+        
+        
     },
 }
-nuguService.findLongHolidayInYear('BID_DT_YEAR.2');
 
-module.exports = nuguService;
+

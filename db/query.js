@@ -29,11 +29,10 @@ const query = {
         let result = await models.sequelize.query(query, { replacements: { value: likeValue } });
 
         output = result[0][0]['count(*)'];
-        await console.log(output);
         return output;
     },
 
-    findHolidayInYear: async (year, month) => {
+    findEverydayInYear: async (year, month) => {
         const firstDayOfYear = year + '-01-01';
         const lastDayOfYear = year + '-12-31';
 
@@ -44,6 +43,21 @@ const query = {
             },
             raw: true,
         });
+    },
+
+    findHoliday: async (year, name) => {
+        const firstDayOfYear = year + '-01-01';
+        const lastDayOfYear = year + '-12-31';
+
+        return output = await models.calendar.findOne({
+            attributes: ['solar_date', 'memo'],
+            where: {
+                solar_date: { [Op.between]: [Date.parse(firstDayOfYear), Date.parse(lastDayOfYear)] },
+                memo: name,
+            },
+            raw: true,
+        })
+
     }
 }
 
