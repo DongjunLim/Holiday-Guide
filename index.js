@@ -3,7 +3,7 @@ const {PORT} = require('./config');
 const express = require('express')
 const bodyParser = require('body-parser')
 const nuguParser = require('./middlewares/nugu');
-const router = require('./router')
+const router = require('./routes/index')
 //const models = require('./models');
 const app = express();
 
@@ -13,7 +13,7 @@ const app = express();
 
 app.use(bodyParser.json());
 app.use('/',nuguParser);
-app.use('/', router);
+app.use('/holiday', router);
 
 
 

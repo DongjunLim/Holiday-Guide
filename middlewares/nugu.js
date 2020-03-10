@@ -1,15 +1,14 @@
-const nugu = require('nugu-kit');
+const Nugu = require('nugu-kit');
 
 const nuguParser = async (req, res, next) => {
-    nugu.app(req, res);
-    const { action, context } = req.body;
-    const { parameters } = action;
-    const { session } = context;
-
+    
+    const nugu = new Nugu(req);
+    const { parameters } = nugu;
+    
+    console.log("연결");
     req.parameters = parameters;
-    req.session = session;
+    //req.session = session;
     req.nugu = nugu;
-
     next();
 
 
