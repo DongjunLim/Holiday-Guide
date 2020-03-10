@@ -7,19 +7,16 @@ const query = {
 
         const firstDayOfYear = year + '-01-01';
         const lastDayOfYear = year + '-12-31';
-        // let output = {}
 
         let output = await models.calendar.count({
-            // attribute: ['solar_date'],
             where: {
                 solar_date: { [Op.between]: [Date.parse(firstDayOfYear), Date.parse(lastDayOfYear)] },
                 memo: { [Op.ne]: '' }
             }
         });
-
         return output;
-
     },
+
     countHolidayInMonth: async (year, month) => {
         let likeValue = '';
         if (month >= 10) {
@@ -28,14 +25,26 @@ const query = {
             likeValue = year + '-0' + month + '%';
         };
         let query = `select count(*) from calendar where solar_date like :value and memo != '';`
-        
-        let result = await models.sequelize.query(query, {replacements: { value: likeValue}});
-        
+
+        let result = await models.sequelize.query(query, { replacements: { value: likeValue } });
+
         output = result[0][0]['count(*)'];
         await console.log(output);
         return output;
+    },
+
+    findHolidayInYear: async (year, month) => {
+        const firstDayOfYear = year + '-01-01';
+        const lastDayOfYear = year + '-12-31';
+
+        return output = await models.calendar.findAll({
+            attributes: ['solar_date', 'memo', 'is_weekend', 'day_of_the_week'],
+            where: {
+                solar_date: { [Op.between]: [Date.parse(firstDayOfYear), Date.parse(lastDayOfYear)] },
+            },
+            raw: true,
+        });
     }
 }
 
-query.countHolidayInMonth(2020,3);
 module.exports = query;

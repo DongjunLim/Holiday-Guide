@@ -32,13 +32,6 @@ exports.findLongHoliday = async (req,res) => {
 
 }
 
-// exports.monthHoliday = async (req,res) => {
-
-
-//     return response(req.nugu, output);
-
-// }
-
 exports.findHolidayDate = async (req,res) => {
     const { holidayName} = req.parameters;
 
