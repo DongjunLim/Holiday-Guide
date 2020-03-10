@@ -4,7 +4,7 @@ const convertKorFormat = require('../date/date');
 const Year = require('./Year');
 
 
-module.exports = nuguService = {
+const nuguService = {
     countHoliday: async (year = null, month = null) => {
         const today = new Date();
         const thisYear = today.getFullYear();
@@ -13,45 +13,46 @@ module.exports = nuguService = {
         let num;
 
         switch (year) {
-            case 'BID_DT_YEAR':
+            case 'Y.0':
                 num = await query.countHolidayInYear(thisYear);
                 break;
-            case 'BID_DT_YEAR.-1':
+            case 'Y.-1':
                 num = await query.countHolidayInYear(thisYear - 1);
                 break;
-            case 'BID_DT_YEAR.-2':
+            case 'Y.-2':
                 num = await query.countHolidayInYear(thisYear - 2);
                 break;
-            case 'BID_DT_YEAR.-3':
+            case 'Y.-3':
                 num = await query.countHolidayInYear(thisYear - 3);
                 break;
-            case 'BID_DT_YEAR.1':
+            case 'Y.1':
                 num = await query.countHolidayInYear(thisYear + 1);
                 break;
-            case 'BID_DT_YEAR.2':
+            case 'Y.2':
                 num = await query.countHolidayInYear(thisYear + 2);
                 break;
         }
 
         switch (month) {
-            case 'BID_DT_MONTH':
+            case 'M.0':
                 num = await query.countHolidayInMonth(thisYear, thisMonth);
                 break;
-            case 'BID_DT_MONTH.M.-1':
+            case 'M.-1':
                 num = await query.countHolidayInMonth(thisYear, thisMonth - 1);
                 break;
-            case 'BID_DT_MONTH.M.-2':
+            case 'M.-2':
                 num = await query.countHolidayInMonth(thisYear, thisMonth - 2);
                 break;
-            case 'BID_DT_MONTH.M.1':
+            case 'M.1':
                 num = await query.countHolidayInMonth(thisYear, thisMonth + 1);
                 break;
-            case 'BID_DT_MONTH.M.2':
+            case 'M.2':
                 num = await query.countHolidayInMonth(thisYear, thisMonth + 2);
                 break;
 
         }
         output['slotFilling_numHoliday'] = num;
+	return output;
 
     },
 
@@ -64,22 +65,22 @@ module.exports = nuguService = {
         let responseSentence = '';
 
         switch (year) {
-            case 'BID_DT_YEAR':
+            case 'Y.0':
                 days = await query.findEverydayInYear(thisYear);
                 break;
-            case 'BID_DT_YEAR.-1':
+            case 'Y.-1':
                 days = await query.findEverydayInYear(thisYear - 1);
                 break;
-            case 'BID_DT_YEAR.-2':
+            case 'Y.-2':
                 days = await query.findEverydayInYear(thisYear - 2);
                 break;
-            case 'BID_DT_YEAR.-3':
+            case 'Y.-3':
                 days = await query.findEverydayInYear(thisYear - 3);
                 break;
-            case 'BID_DT_YEAR.1':
+            case 'Y.1':
                 days = await query.findEverydayInYear(thisYear + 1);
                 break;
-            case 'BID_DT_YEAR.2':
+            case 'Y.2':
                 days = await query.findEverydayInYear(thisYear + 2);
                 break;
         }
@@ -113,4 +114,4 @@ module.exports = nuguService = {
     },
 }
 
-
+module.exports = nuguService;
