@@ -11,7 +11,8 @@ const query = {
         let output = await models.calendar.count({
             where: {
                 solar_date: { [Op.between]: [Date.parse(firstDayOfYear), Date.parse(lastDayOfYear)] },
-                memo: { [Op.ne]: '' }
+                is_holiday:1,
+                is_weekend:0 
             }
         });
         return output;
@@ -24,7 +25,7 @@ const query = {
         } else {
             likeValue = year + '-0' + month + '%';
         };
-        let query = `select count(*) from calendar where solar_date like :value and memo != '';`
+        let query = `select count(*) from calendar where solar_date like :value and is_holiday = 1 and is_weekend = 0;`
 
         let result = await models.sequelize.query(query, { replacements: { value: likeValue } });
 
@@ -37,7 +38,7 @@ const query = {
         const lastDayOfYear = year + '-12-31';
 
         return output = await models.calendar.findAll({
-            attributes: ['solar_date', 'memo', 'is_weekend', 'day_of_the_week'],
+            attributes: ['solar_date', 'memo', 'is_weekend', 'day_of_the_week','is_holiday'],
             where: {
                 solar_date: { [Op.between]: [Date.parse(firstDayOfYear), Date.parse(lastDayOfYear)] },
             },
